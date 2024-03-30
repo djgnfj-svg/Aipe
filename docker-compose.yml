@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dbname
+
+  django:
+    build: ./backend
+    command: gunicorn Aipe.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./backend:/code
+    environment:
+      - DATABASE_URL=postgres://user:password@db/dbname
+    depends_on:
+      - db
+
+  react:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./frontend/build:/usr/share/nginx/html
+      - static_volume:/usr/share/nginx/static
+      - media_volume:/usr/share/nginx/media
+    depends_on:
+      - django
+      - react
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
