@@ -36,7 +36,7 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
                                 />
                             </div>
                             {/* Price Input */}
-                            <div className="col-span-2 sm:col-span-1">
+                            {/* <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
                                 <input
                                     type="number"
@@ -48,9 +48,9 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
                                     placeholder="$2999"
                                     required
                                 />
-                            </div>
+                            </div> */}
                             {/* Category Select */}
-                            <div className="col-span-2 sm:col-span-1">
+                            <div className="col-span-2">
                                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                                 <select
                                     id="category"
@@ -60,10 +60,10 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 >
                                     <option value="">Select category</option>
-                                    <option value="TV">TV/Monitors</option>
-                                    <option value="PC">PC</option>
-                                    <option value="GA">Gaming/Console</option>
-                                    <option value="PH">Phones</option>
+                                    <option value="TV">선형 3개</option>
+                                    <option value="PC">선형 5개</option>
+                                    <option value="GA">회전형</option>
+                                    <option value="PH">검색형(계발중)</option>
                                 </select>
                             </div>
                             {/* Description Textarea */}
