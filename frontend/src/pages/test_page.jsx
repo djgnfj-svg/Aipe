@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ModalForm from '../components/modal/ModalForm';
+import ModalForm from '../components/modal/ModuleModal';
 function Chat() {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');

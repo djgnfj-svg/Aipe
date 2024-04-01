@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 
-function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
+function ModuleModal({ formData, handleChange, handleSubmit, closeModal }) {
     return (
         <div
             id="crud-modal"
@@ -114,4 +114,4 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
     );
 }
 
-export default ModalForm;
+export default ModuleModal;

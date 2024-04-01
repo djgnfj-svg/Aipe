@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import ModalForm from '../components/modal/ModalForm';
+import ModuleModal from '../components/modal/ModuleModal';
 
 const products = [
     {
@@ -88,7 +88,7 @@ function MainPage() {
         <>
             <div>
                 {isModalOpen && (
-                    <ModalForm
+                    <ModuleModal
                         formData={formData}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
