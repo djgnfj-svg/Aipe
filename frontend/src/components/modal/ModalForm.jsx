@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 
 function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
     return (
@@ -50,7 +51,7 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
                                 />
                             </div> */}
                             {/* Category Select */}
-                            <div className="col-span-2">
+                            {/* <div className="col-span-2">
                                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                                 <select
                                     id="category"
@@ -65,7 +66,7 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
                                     <option value="GA">회전형</option>
                                     <option value="PH">검색형(계발중)</option>
                                 </select>
-                            </div>
+                            </div> */}
                             {/* Description Textarea */}
                             <div className="col-span-2">
                                 <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
@@ -79,10 +80,32 @@ function ModalForm({ formData, handleChange, handleSubmit, closeModal }) {
                                     placeholder="Write product description here"
                                 ></textarea>
                             </div>
+                            {/* {썸네일} */}
+                            {/* <div className="col-span-full">
+                                <label htmlFor="cover-photo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">썸네일</label>
+                                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                                    <div className="text-center">
+                                        <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+                                        <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                                            <label
+                                                htmlFor="file-upload"
+                                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                                            >
+                                                <span>Upload a file</span>
+                                                <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                                            </label>
+                                            <p className="pl-1">or drag and drop</p>
+                                        </div>
+                                        <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                                    </div>
+                                </div>
+                            </div> */}
+
                             <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                                 Add new product
                             </button>
+
                         </div>
                     </form>
                 </div>
