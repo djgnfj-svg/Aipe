@@ -82,7 +82,7 @@ function MainPage() {
                     />
                 )}
             </div>
-            <div className="bg-white">
+            <div className="bg-gray-800">
                 <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                     <h2 className="sr-only">Products</h2>
 
@@ -96,8 +96,8 @@ function MainPage() {
                                         className="h-full w-full object-cover object-center group-hover:opacity-75"
                                     />
                                 </div>
-                                <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-                                <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
+                                <h3 className="mt-4 text-sm text-zinc-200">{product.name}</h3>
+                                <p className="mt-1 text-lg font-medium text-zinc-400">{product.price}</p>
                             </a>
                         ))}
                         <div key="test" className="group" onClick={toggleModal}>
@@ -108,8 +108,8 @@ function MainPage() {
                                     className="h-full w-full object-cover object-center group-hover:opacity-75 bg-transparent"
                                 />
                             </div>
-                            <h3 className="mt-4 text-sm text-gray-700">test</h3>
-                            <p className="mt-1 text-lg font-medium text-gray-900">test</p>
+                            <h3 className="mt-4 text-sm text-zinc-200">test</h3>
+                            <p className="mt-1 text-lg font-medium text-zinc-400">test</p>
                         </div>
                     </div>
                 </div>

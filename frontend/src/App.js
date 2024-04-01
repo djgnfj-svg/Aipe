@@ -3,16 +3,20 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/main_page";
 import TestPage from "./pages/test_page";
+import Navbar from "./components/navbar/navbar";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/test" element={<TestPage />} />
-        <Route path="/modal/:id" element={<TestPage />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Navbar />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/test" element={<TestPage />} />
+          <Route path="/modal/:id" element={<TestPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
