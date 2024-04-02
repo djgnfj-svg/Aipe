@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import NodeModal from '../components/modal/NodeModal';
 
-function Chat({ ischat, messages, onSendMessage, isSending }) {
+function Chat({ messages, onSendMessage, isSending }) {
     const [inputValue, setInputValue] = useState('');
 
     const handleKeyPress = (e) => {
@@ -43,9 +44,26 @@ function Chat({ ischat, messages, onSendMessage, isSending }) {
 function Product_Detail_Page() {
     const [messages, setMessages] = useState([]);
     const [isSending, setIsSending] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [nodeStates, setNodeStates] = useState(['bg-gray-100', 'bg-gray-100']);
     const [completedMessages, setCompletedMessages] = useState([]); // 완료 메시지들을 저장할 배열 상태
 
+    const [formData, setFormData] = useState({
+        name: '',
+        price: '',
+        category: '',
+        description: '',
+    });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Form Data:', formData);
+        setIsModalOpen(false);
+    };
+    const toggleModal = () => setIsModalOpen(!isModalOpen);
     const sendMessage = async (message) => {
         setIsSending(true);
         setMessages([...messages, message]);
@@ -67,32 +85,51 @@ function Product_Detail_Page() {
     };
 
     return (
-        <div className="flex flex-col md:flex-row h-screen">
-            <div className="flex-1 bg-red-200">
-                <Chat isSending={isSending} messages={messages} onSendMessage={sendMessage} />
+        <>
+            <div>
+                {isModalOpen && (
+                    <NodeModal
+                        formData={formData}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                        closeModal={toggleModal}
+                    />
+                )}
             </div>
-            <div className="flex-1 flex flex-col justify-center items-center bg-green-200 space-y-4">
-                {nodeStates.map((nodeState, index) => (
-                    <div key={index} className={`w-3/4 h-20 ${nodeState} rounded flex justify-center items-center transition duration-300`}>
-                        NODE {index + 1}
+            <div className="flex flex-col md:flex-row h-screen">
+                <div className="flex-1 bg-red-200">
+                    <Chat isSending={isSending} messages={messages} onSendMessage={sendMessage} />
+                </div>
+                <div className="flex-1 flex flex-col justify-center items-center bg-green-200 space-y-4">
+                    {nodeStates.map((nodeState, index) => (
+                        <div key={index} className={`w-3/4 h-20 ${nodeState} rounded flex justify-center items-center transition duration-300 hover:bg-blue-500`} onClick={toggleModal}>
+                            NODE {index + 1}
+                        </div>
+                    ))}
+                    <div className={`h-20  rounded flex justify-center items-center transition duration-300 hover:bg-blue-500`} onClick={toggleModal}>
+                        <img
+                            src="/img/module_plus.png"
+                            alt="test"
+                            className="h-full w-full object-cover object-center group-hover:opacity-75 bg-transparent"
+                        />
                     </div>
-                ))}
-            </div>
-            {/* 오른쪽 섹션 */}
-            <div className="flex-1 flex justify-center items-center bg-blue-200">
-                <div className="chat-message">
-                    <div className="flex flex-col items-start mb-4">
-                        {completedMessages.map((msg, index) => (
-                            <div key={index} className="flex items-start space-y-2 text-sm max-w-md mx-2 order-2 mt-4">
-                                <span className="px-6 py-4 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                                    {msg}
-                                </span>
-                            </div>
-                        ))}
+                </div>
+                {/* 오른쪽 섹션 */}
+                <div className="flex-1 flex justify-center items-center bg-blue-200">
+                    <div className="chat-message">
+                        <div className="flex flex-col items-start mb-4">
+                            {completedMessages.map((msg, index) => (
+                                <div key={index} className="flex items-start space-y-2 text-sm max-w-md mx-2 order-2 mt-4">
+                                    <span className="px-6 py-4 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
+                                        {msg}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
