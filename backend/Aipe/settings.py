@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import json
+import os
 from pathlib import Path
 
 def _get_secrets(name):
@@ -138,10 +139,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ]
 }
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 사용자가 업로드한 파일 관리
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",

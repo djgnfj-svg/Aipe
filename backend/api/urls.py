@@ -10,8 +10,8 @@ from api.viewset.Module_Viewset import Module_Viewset
 # from api.viewset.week_diet_viewset import WeekDietViewSet
 
 router = routers.DefaultRouter()
-router.register(r'noods', Nood_Viewset, basename="diets")
-router.register(r'moduls', Module_Viewset, basename="week-diet")
+router.register(r'noods', Nood_Viewset, basename="noods")
+router.register(r'modules', Module_Viewset, basename="modules")
 # router.register(r'foods', FoodViewset, basename="food")
 # router.register(r'food-category', FoodCategoryViewset, basename="food-category")
 # router.register(r'meals', MealViewset, basename="meals")
