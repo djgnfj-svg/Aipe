@@ -6,102 +6,102 @@ import axios from 'axios';
 function MainPage() {
     const [products, setProducts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState('add');
+    const [currentProductId, setCurrentProductId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        // price: '',
-        // category: '',
-        shumnail: '',
         description: '',
+        thumbnail: '',
     });
-    useEffect(() => {
-        const fetchData = async () => {
-            const apiUrl = process.env.REACT_APP_API_URL; // 환경 변수에서 API URL을 가져옴
-            try {
-                const response = await axios.get(`${apiUrl}/api/modules/`);
-                setProducts(response.data);
-            } catch (error) {
-                console.error("There was an error!", error);
-            }
-        };
 
+    const fetchData = async () => {
+        const apiUrl = process.env.REACT_APP_API_URL; // 환경 변수에서 API URL을 가져옴
+        try {
+            const response = await axios.get(`${apiUrl}/api/modules/`);
+            setProducts(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error("There was an error!", error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
+
+    // 모달 토글 함수를 업데이트
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
         setFormData({
             name: '',
-            // price: '',
-            // category: '',
-            shumnail: '',
+            thumbnail: '',
             description: '',
         });
-    }
+        if (!isModalOpen) setModalMode('add'); // 모달을 열 때 기본 모드를 'add'로 설정
+    };
+
+    const handleOpenUpdateModal = (product) => {
+        setFormData({
+            // 기존 formData 구조를 유지하면서,
+            name: product.name,
+            thumbnail: product.thumbnail,
+            description: product.description,
+        });
+        setCurrentProductId(product.id); // 현재 제품 ID를 상태에 저장
+        setIsModalOpen(true);
+        setModalMode('update'); // 모달 모드를 'update'로 설정
+    };
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
+        e.preventDefault();
+        const apiUrl = process.env.REACT_APP_API_URL;
 
-        const apiUrl = process.env.REACT_APP_API_URL; // 환경 변수에서 API URL을 가져옴
+        // FormData 객체 생성과 필요한 데이터 추가
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', formData.name);
+        formDataToSend.append('description', formData.description);
+
         try {
-            // 서버에 POST 요청을 보내고 응답을 기다림
-            const response = await axios.post(`${apiUrl}/api/modules/`, formData);
-            console.log('Form submit response:', response.data);
-
-            // 모달 닫기
+            if (modalMode === 'add') {
+                // 추가 로직
+                await axios.post(`${apiUrl}/api/modules/`, formDataToSend, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                fetchData()
+            } else if (modalMode === 'update' && currentProductId) {
+                // 업데이트 로직에 현재 선택된 제품의 ID를 사용
+                const response = await axios.put(`${apiUrl}/api/modules/${currentProductId}/`, formDataToSend, {
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                setProducts(products.map(product => product.id === currentProductId ? response.data : product));
+            }
             setIsModalOpen(false);
-
-            // 폼 데이터 초기화
-            setFormData({
-                name: '',
-                // price: '',
-                // category: '',
-                shumnail: '',
-                description: '',
-            });
-
-            // 제품 목록 새로 고침
-            // 이 부분은 추가 구현이 필요할 수 있음
-            // 예를 들어, 상품 목록 상태를 업데이트하는 로직 등
         } catch (error) {
-            console.error("There was an error submitting the form:", error);
+            console.error('작업에 실패했습니다. 다시 시도해주세요.', error);
+            alert('작업에 실패했습니다. 다시 시도해주세요.');
         }
     };
 
-    // TODO : Ajax 통신으로 수정, 삭제
-    const handleUpdate = async (productId) => {
-        // 업데이트를 위한 폼 데이터 설정, 예를 들어:
-        const updateData = {
-            name: 'Updated Product Name',
-            description: 'Updated Description',
-            // 기타 필요한 데이터...
-        };
-
-        try {
-            const apiUrl = process.env.REACT_APP_API_URL;
-            const response = await axios.put(`${apiUrl}/api/modules/${productId}/`, updateData);
-            console.log('Update response:', response.data);
-
-            // 성공적으로 업데이트한 후 제품 목록을 새로 고침하거나 UI를 업데이트합니다.
-            // 예를 들어, fetchData() 함수를 다시 호출하거나, 상태를 직접 업데이트할 수 있습니다.
-        } catch (error) {
-            console.error("There was an error updating the product:", error);
-        }
-    };
-
-    // delete 기능 구현
     const handleDelete = async (productId) => {
+        // 사용자에게 삭제를 확인
+        const isConfirmed = window.confirm('해당 제품을 삭제하시겠습니까?');
+        if (!isConfirmed) {
+            return; // 사용자가 취소를 누르면 여기서 함수 종료
+        }
+
         try {
             const apiUrl = process.env.REACT_APP_API_URL;
-            const response = await axios.delete(`${apiUrl}/api/modules/${productId}/`);
-            console.log('Delete response:', response.data);
-
-            // 성공적으로 삭제한 후 제품 목록을 새로 고침하거나 UI를 업데이트합니다.
-            // 예를 들어, fetchData() 함수를 다시 호출하거나, 상태를 직접 업데이트할 수 있습니다.
+            await axios.delete(`${apiUrl}/api/modules/${productId}/`);
+            // 삭제 성공 후 제품 목록에서 해당 제품 제거
+            setProducts(products.filter(product => product.id !== productId));
         } catch (error) {
             console.error("There was an error deleting the product:", error);
+            alert('제품 삭제에 실패했습니다. 다시 시도해주세요.');
         }
     };
 
@@ -126,18 +126,22 @@ function MainPage() {
                                 <a key={product.id} href={product.href} className="group">
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                                         <img
-                                            src={product.shumnail}
+                                            src={product.thumbnail}
                                             /* alt={product.imageAlt} */
                                             className="h-full w-full object-cover object-center group-hover:opacity-75"
                                         />
                                     </div>
-                                    <h3 className="mt-4 text-sm text-zinc-200">{product.name}</h3>
+                                    <h3 className="mt-4 text-6xl text-zinc-200">{product.name}</h3>
                                 </a>
-                                {/* <p className="mt-1 text-lg font-medium text-zinc-400">{product.price}</p> */}
-                                <button className="..." onClick={() => handleUpdate(product.id)}>
+                                <p className="mt-1 text-lg font-medium text-zinc-300">{product.description}</p>
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                                    onClick={() => handleOpenUpdateModal(product)}>
                                     수정
                                 </button>
-                                <button className="..." onClick={() => handleDelete(product.id)}>
+                                <button
+                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer ml-4"
+                                    onClick={() => handleDelete(product.id)}>
                                     삭제
                                 </button>
                             </div>
@@ -150,12 +154,11 @@ function MainPage() {
                                     className="h-full w-full object-cover object-center group-hover:opacity-75 bg-transparent"
                                 />
                             </div>
-                            <h3 className="mt-4 text-sm text-zinc-200">test</h3>
-                            <p className="mt-1 text-lg font-medium text-zinc-400">test</p>
+                            <h3 className="mt-4 text-2xl text-zinc-200">모듈 추가</h3>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     );
 }
